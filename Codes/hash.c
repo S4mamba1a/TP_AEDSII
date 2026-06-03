@@ -1,6 +1,9 @@
-// Victor Laurindo de Almeida 6580
-// Eduardo Braga Cota Pereira 6568
-// Vitor Costa Cardoso 6589
+/*
+ * Grupo: Eduardo Braga[6568], Victor Laurindo[6580], Victor Costa[6589]
+ * CCF212 - Algoritmos e Estruturas de Dados II
+ * UFV Campus Florestal - 2026/1
+ */
+
 #include "hash.h"
 
 void FLVazia(TipoLista *Lista)
@@ -36,7 +39,7 @@ void GeraPesos(TipoPesos p)
   struct timeval semente;
   gettimeofday(&semente, NULL); 
   srand((int)(semente.tv_sec + 1000000*semente.tv_usec));
-  for (i = 0; i < n; i++)
+  for (i = 0; i < N; i++)
      p[i] =  1+(int) (10000.0*rand()/(RAND_MAX+1.0));
 }
 
