@@ -9,13 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-// Estrutura para a lista encadeada do Indice Invertido <idDoc, qtde>
-typedef struct CelulaDoc {
-    int idDoc;
-    int qtde;
-    struct CelulaDoc *prox;
-} CelulaDoc;
+#include "arquivo.h"
 
 // Diferencia se o nó é interno (guarda indice/char) ou externo (guarda a palavra e a lista)
 typedef enum {
@@ -38,7 +32,7 @@ struct PATNo {
         // Nó Externo: folha que guarda a palavra e os documentos
         struct {
             char *palavra;
-            CelulaDoc *listaDocs;
+            Ocorrencia *listaDocs;
         } NExterno;
     } NO;
 };
