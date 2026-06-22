@@ -14,7 +14,7 @@
 #include "arquivo.h"
 
 #define M 1000
-#define N 50
+#define N 128
 
 // --- ESTRUTURAS DO ÍNDICE INVERTIDO ---
 
