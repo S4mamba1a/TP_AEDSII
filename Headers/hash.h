@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <string.h>
+#include "arquivo.h"
 
 #define M 1000
 #define N 50
@@ -18,12 +19,7 @@
 // --- ESTRUTURAS DO ÍNDICE INVERTIDO ---
 
 // 1. Célula da Lista de Documentos (Ocorrências)
-typedef struct CelulaOcorrencia* ApontadorOcorrencia;
-typedef struct CelulaOcorrencia {
-    int idDoc;
-    int qtde;
-    ApontadorOcorrencia Prox;
-} CelulaOcorrencia;
+typedef struct Ocorrencia* ApontadorOcorrencia;
 
 typedef char TipoChave[N];
 typedef unsigned int TipoPesos[N];
@@ -51,7 +47,7 @@ typedef TipoLista TipoDicionario[M];
 
 void FLVazia(TipoLista *Lista);
 short Vazia(TipoLista Lista);
-void Insere(TipoItem x, TipoLista *Lista);
+void Ins(TipoItem x, TipoLista *Lista);
 
 // Funções de Hashing
 void GeraPesos(TipoPesos p);

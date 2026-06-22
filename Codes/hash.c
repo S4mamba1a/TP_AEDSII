@@ -62,12 +62,12 @@ void AdicionaOuAtualizaOcorrencia(ApontadorOcorrencia *lista, int idDoc) {
 
     if (aux != NULL && aux->idDoc == idDoc) {
         // Documento já existe na lista: apenas incrementa a frequência (TF)
-        aux->qtde++;
+        aux->quantidade++;
     } else {
         // Primeira vez que a palavra aparece neste documento
-        ApontadorOcorrencia nova = (ApontadorOcorrencia)malloc(sizeof(CelulaOcorrencia));
+        ApontadorOcorrencia nova = (ApontadorOcorrencia)malloc(sizeof(Ocorrencia));
         nova->idDoc = idDoc;
-        nova->qtde = 1;
+        nova->quantidade = 1;
         nova->Prox = NULL;
 
         if (ant == NULL) {
@@ -108,7 +108,7 @@ void Insere(TipoChave Ch, int idDoc, TipoPesos p, TipoDicionario T, int *compara
         // Insere a nova palavra na Tabela Hash
         Ins(x, &T[h(Ch, p)]);
     } else {
-        // CASO 2: A palavra já existe! Apenas atualizamos a lista de documentos dela
+        // CASO 2: A palavra já existe, apenas atualizamos a lista de documentos dela
         AdicionaOuAtualizaOcorrencia(&(Ap->Item.ListaDocs), idDoc);
     }
 } 
@@ -124,7 +124,7 @@ void ImprimeIndiceInvertido(TipoDicionario Tabela) {
             // Percorre a lista de documentos dessa palavra
             ApontadorOcorrencia AuxDoc = AuxPalavra->Item.ListaDocs;
             while (AuxDoc != NULL) {
-                printf("<%d, %d> ", AuxDoc->qtde, AuxDoc->idDoc);
+                printf("<%d, %d> ", AuxDoc->quantidade, AuxDoc->idDoc);
                 AuxDoc = AuxDoc->Prox;
             }
             printf("\n");
