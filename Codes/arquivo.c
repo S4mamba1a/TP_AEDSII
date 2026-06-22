@@ -155,7 +155,7 @@ Ocorrencia *arq_novo_Ocorrencia(int idDoc) {
     }
     p->idDoc = idDoc;
     p->quantidade  = 1;
-    p->prox  = NULL;
+    p->Prox  = NULL;
     return p;
 }
 
@@ -167,7 +167,7 @@ int arq_inserir_Ocorrencia(Ocorrencia **lista, int idDoc) {
     // avanca enquanto idDoc do no atual for menor que o idDoc buscado
     while (cur != NULL && cur->idDoc < idDoc) {
         ant = cur;
-        cur = cur->prox;
+        cur = cur->Prox;
     }
 
     // documento ja existe na lista: so incrementa
@@ -178,11 +178,11 @@ int arq_inserir_Ocorrencia(Ocorrencia **lista, int idDoc) {
 
     // documento novo: cria no e encadeia 
     Ocorrencia *novo = arq_novo_Ocorrencia(idDoc);
-    novo->prox = cur;
+    novo->Prox = cur;
     if (ant == NULL) {
         *lista = novo; //insere no inicio
     } else {
-        ant->prox = novo;
+        ant->Prox = novo;
     }
     return 1;
 }
@@ -191,7 +191,7 @@ int arq_inserir_Ocorrencia(Ocorrencia **lista, int idDoc) {
 void arq_liberar_Ocorrencias(Ocorrencia *lista) {
     Ocorrencia *tmp;
     while (lista != NULL) {
-        tmp   = lista->prox;
+        tmp   = lista->Prox;
         free(lista);
         lista = tmp;
     }
@@ -200,7 +200,7 @@ void arq_liberar_Ocorrencias(Ocorrencia *lista) {
 void arq_imprimir_Ocorrencias(Ocorrencia *lista) {
     while (lista != NULL) {
         printf(" <%d,%d>", lista->quantidade, lista->idDoc);
-        lista = lista->prox;
+        lista = lista->Prox;
     }
 }
 
