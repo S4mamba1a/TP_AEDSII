@@ -18,29 +18,29 @@ void InicializaArvore(Apontador *raiz) {
 }
 
 // Funcao auxiliar para atualizar ou inserir um novo documento na lista
-void AtualizaListaDoc(CelulaDoc **lista, int idDoc) {
-    CelulaDoc *atual = *lista;
-    CelulaDoc *ant = NULL;
+void AtualizaListaDoc(Ocorrencia **lista, int idDoc) {
+    Ocorrencia *atual = *lista;
+    Ocorrencia *ant = NULL;
 
     // Procura se o doc ja existe (lista deve ser ordenada por idDoc)
     while (atual != NULL && atual->idDoc < idDoc) {
         ant = atual;
-        atual = atual->prox;
+        atual = atual->Prox;
     }
 
     if (atual != NULL && atual->idDoc == idDoc) {
-        atual->qtde++; // Palavra apareceu de novo no mesmo arquivo
+        atual->quantidade++; // Palavra apareceu de novo no mesmo arquivo
     } else {
         // Nao achou, cria nova celula
-        CelulaDoc *nova = (CelulaDoc *)malloc(sizeof(CelulaDoc));
+        Ocorrencia *nova = (Ocorrencia *)malloc(sizeof(Ocorrencia));
         nova->idDoc = idDoc;
-        nova->qtde = 1;
-        nova->prox = atual;
+        nova->quantidade = 1;
+        nova->Prox = atual;
 
         if (ant == NULL) {
             *lista = nova; // Insere no inicio
         } else {
-            ant->prox = nova; // Insere no meio/fim
+            ant->Prox = nova; // Insere no meio/fim
         }
     }
 }
@@ -158,11 +158,11 @@ Apontador InserePatricia(char *palavra, int idDoc, Apontador *raiz) {
     return *raiz;
 }
 
-void ImprimeListaDocs(CelulaDoc *lista) {
-    CelulaDoc *aux = lista;
+void ImprimeListaDocs(Ocorrencia *lista) {
+    Ocorrencia *aux = lista;
     while (aux != NULL) {
-        printf("<%d, %d> ", aux->idDoc, aux->qtde);
-        aux = aux->prox;
+        printf("<%d, %d> ", aux->idDoc, aux->quantidade);
+        aux = aux->Prox;
     }
     printf("\n");
 }
