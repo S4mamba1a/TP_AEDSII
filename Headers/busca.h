@@ -26,7 +26,7 @@ typedef struct {
  * - termosDistintosPorDoc: Vetor onde o índice é o idDoc e o valor é o 'n_i' (termos distintos daquele doc)
  * - nomesDocumentos: Vetor de strings para imprimir o nome original do arquivo (ex: "arquivo1.txt")
  */
-void BuscarFabulhas(char termosConsulta[][N], int numTermosConsulta, TipoDicionario T, 
+void BuscarFabulas(char termosConsulta[][N], int numTermosConsulta, TipoDicionario T, 
                     int N_TotalDocs, int *termosDistintosPorDoc, char nomesDocumentos[][100]);
 
 #endif

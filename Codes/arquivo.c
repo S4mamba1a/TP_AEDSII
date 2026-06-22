@@ -15,7 +15,7 @@
 static char sw_banco[MAX_STOPWORDS][MAX_PALAVRA];    //Vetor interno de stopwords
 static int  sw_count = 0;
 
-int arq_carregar_stopwords(const char *arqStop) {       //Abre o arquivo e le uma palavra por linha, guardando em sw_banco[]
+int carregarStopWords(const char *arqStop) {       //Abre o arquivo e le uma palavra por linha, guardando em sw_banco[]
     FILE *f = fopen(arqStop, "r");
     if (f == NULL) {
         printf("Erro ao abrir stopwords: %s\n", arqStop);
@@ -25,7 +25,7 @@ int arq_carregar_stopwords(const char *arqStop) {       //Abre o arquivo e le um
     sw_count = 0;
     char buf[MAX_PALAVRA];
     while (sw_count < MAX_STOPWORDS && fscanf(f, "%127s", buf) == 1) {
-        /* converte para minusculo antes de guardar */
+        //converte para minusculo antes de guardar 
         int i = 0;
         while (buf[i] != '\0') {
             buf[i] = (char)tolower((unsigned char)buf[i]);
@@ -41,7 +41,7 @@ int arq_carregar_stopwords(const char *arqStop) {       //Abre o arquivo e le um
 }
 
 
-int arq_eh_stopword(const char *palavra) {    //Busca linear no vetor de stopwords. Retorna 1 se encontrou, 0 c.c.
+int EhStopWord(const char *palavra) {    //Busca linear no vetor de stopwords. Retorna 1 se encontrou, 0 c.c.
     int i;
     for (i = 0; i < sw_count; i++) {
         if (strcmp(sw_banco[i], palavra) == 0) {
@@ -51,7 +51,7 @@ int arq_eh_stopword(const char *palavra) {    //Busca linear no vetor de stopwor
     return 0;
 }
 
-void arq_limpar_palavra(char *s) {         //Ex: "Hello, World!" ->  "hello" "world"
+void arq_LimparPalavra(char *s) {         //Ex: "Hello, World!" ->  "hello" "world"
     int i, j;
     j = 0;
     for (i = 0; s[i] != '\0'; i++) {
@@ -64,7 +64,7 @@ void arq_limpar_palavra(char *s) {         //Ex: "Hello, World!" ->  "hello" "wo
 }
 
 
-int arq_ler_entrada(const char *arqEntrada, InfoDoc docs[], int maxDocs) {
+int LerEntrada(const char *arqEntrada, InfoDoc docs[], int maxDocs) {
     FILE *f = fopen(arqEntrada, "r");
     if (f == NULL) {
         printf("Erro ao abrir arquivo de entrada: %s\n", arqEntrada);
@@ -103,7 +103,7 @@ int arq_ler_entrada(const char *arqEntrada, InfoDoc docs[], int maxDocs) {
 }
 
 
-FILE *arq_abrir_fabula(const char *arqFabula) {     // Abre o arquivo da fabula e retorna o FILE* diretamente. 
+FILE *arq_AbrirFabula(const char *arqFabula) {     // Abre o arquivo da fabula e retorna o FILE* diretamente. 
     FILE *f = fopen(arqFabula, "r");
     if (f == NULL) {
         printf("Erro ao abrir fabula: %s\n", arqFabula);
@@ -112,11 +112,11 @@ FILE *arq_abrir_fabula(const char *arqFabula) {     // Abre o arquivo da fabula 
 }
 
 
-int arq_proxima_palavra(FILE *arq, char *buf) {
+int arq_ProxPalavra(FILE *arq, char *buf) {
     char tmp[MAX_PALAVRA];
 
     while (fscanf(arq, "%127s", tmp) == 1) {
-        arq_limpar_palavra(tmp);
+        arq_LimparPalavra(tmp);
 
         // descarta se ficou vazio (era so pontuacao) 
         if (tmp[0] == '\0') {
@@ -124,7 +124,7 @@ int arq_proxima_palavra(FILE *arq, char *buf) {
         }
 
         // descarta se e stopword 
-        if (arq_eh_stopword(tmp)) {
+        if (EhStopWord(tmp)) {
             continue;
         }
 
@@ -139,7 +139,7 @@ int arq_proxima_palavra(FILE *arq, char *buf) {
 
 
 
-void arq_fechar_fabula(FILE *arq) {
+void arq_FecharFabula(FILE *arq) {
     if (arq != NULL) {
         fclose(arq);
     }
@@ -147,7 +147,7 @@ void arq_fechar_fabula(FILE *arq) {
 
 
 
-Ocorrencia *arq_novo_Ocorrencia(int idDoc) {
+Ocorrencia *arq_NovaOcorrencia(int idDoc) {
     Ocorrencia *p = (Ocorrencia *)malloc(sizeof(Ocorrencia));
     if (p == NULL) {
         printf("Erro: sem memoria para Ocorrencia\n");
@@ -160,7 +160,7 @@ Ocorrencia *arq_novo_Ocorrencia(int idDoc) {
 }
 
 
-int arq_inserir_Ocorrencia(Ocorrencia **lista, int idDoc) {
+int arq_InserirOcorrencia(Ocorrencia **lista, int idDoc) {
     Ocorrencia *ant = NULL;
     Ocorrencia *cur = *lista;
 
@@ -177,7 +177,7 @@ int arq_inserir_Ocorrencia(Ocorrencia **lista, int idDoc) {
     }
 
     // documento novo: cria no e encadeia 
-    Ocorrencia *novo = arq_novo_Ocorrencia(idDoc);
+    Ocorrencia *novo = arq_NovaOcorrencia(idDoc);
     novo->Prox = cur;
     if (ant == NULL) {
         *lista = novo; //insere no inicio
@@ -186,18 +186,18 @@ int arq_inserir_Ocorrencia(Ocorrencia **lista, int idDoc) {
     }
     return 1;
 }
-
-
-void arq_liberar_Ocorrencias(Ocorrencia *lista) {
+ 
+int arq_LiberarOcorrencia(Ocorrencia *lista) {
     Ocorrencia *tmp;
     while (lista != NULL) {
         tmp   = lista->Prox;
         free(lista);
         lista = tmp;
     }
+    return 0;
 }
 
-void arq_imprimir_Ocorrencias(Ocorrencia *lista) {
+void ImprimirOcorrencia(Ocorrencia *lista) {
     while (lista != NULL) {
         printf(" <%d,%d>", lista->quantidade, lista->idDoc);
         lista = lista->Prox;

@@ -7,6 +7,7 @@
 
 #ifndef arquivo_h
 #define arquivo_h
+#include <stdio.h>
 
 #define MAX_DOCS 100            //Máximo de documentos suportados
 #define MAX_PALAVRA 128        //Tamanho máximo de uma palavra indexada
@@ -31,11 +32,11 @@ int EhStopWord(const char *palavra);
 
 int LerEntrada(const char *arqEntrada, InfoDoc docs[], int maxDocs);   //Lê o arquivo de entrada (formato: N seguido de N nomes de arquivo). Preenche docs[] e retorna o número de documentos lidos, -1 se erro.
 
-void *arq_AbrirFabula(const char *arqFabula);  //Abre o arquivo da fábula para leitura
+FILE *arq_AbrirFabula(const char *arqFabula);  //Abre o arquivo da fábula para leitura
 
-int arq_ProxPalavra(void *handle, char *buf);   //Le a proxima palavra valida: aplica limpeza e filtra stopwords.
+int arq_ProxPalavra(FILE *arq, char *buf);   //Le a proxima palavra valida: aplica limpeza e filtra stopwords.
 
-void  arq_FecharFabula(void *handle);
+void  arq_FecharFabula(FILE *arq);
 
 void arq_LimparPalavra(char *string);
 
@@ -45,7 +46,7 @@ int arq_InserirOcorrencia(Ocorrencia **lista, int idDoc);   //Insere ou atualiza
   
 int arq_LiberarOcorrencia(Ocorrencia *lista);   //Libera todos os nós
 
-void ImprimeOcorrencia(Ocorrencia *lista);  //Imprime a lista no formato: <qtde,idDoc> <qtde,idDoc>
+void ImprimirOcorrencia(Ocorrencia *lista);  //Imprime a lista no formato: <qtde,idDoc> <qtde,idDoc>
 
 
 

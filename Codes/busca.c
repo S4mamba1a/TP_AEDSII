@@ -18,7 +18,7 @@ int ComparaRelevancia(const void *a, const void *b) {
     return 0;
 }
 
-void BuscarFabulhas(char termosConsulta[][N], int numTermosConsulta, TipoDicionario T, 
+void BuscarFabulas(char termosConsulta[][N], int numTermosConsulta, TipoDicionario T, 
                     int N_TotalDocs, int *termosDistintosPorDoc, char nomesDocumentos[][100]) {
     
     // Vetor para acumular a soma dos pesos (w) de cada documento
