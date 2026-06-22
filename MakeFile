@@ -1,5 +1,6 @@
 all: main.c Codes/arquivo.c Codes/busca.c Codes/hash.c Codes/patricia.c
-	gcc main.c Codes/arquivo.c Codes/busca.c Codes/hash.c Codes/patricia.c -IHeaders -o exec
+	gcc main.c Codes/arquivo.c Codes/busca.c Codes/hash.c Codes/patricia.c -IHeaders -o exec.exe
+
 
 run:
-	./exec
+	.\exec.exe
