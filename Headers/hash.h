@@ -11,62 +11,62 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <string.h>
-#define M 1000
-#define N 20     
-#define TAMALFABETO 256
 
-typedef unsigned int  TipoPesos[N];
+#define M 1000
+#define N 50
+
+// --- ESTRUTURAS DO ÍNDICE INVERTIDO ---
+
+// 1. Célula da Lista de Documentos (Ocorrências)
+typedef struct CelulaOcorrencia* ApontadorOcorrencia;
+typedef struct CelulaOcorrencia {
+    int idDoc;
+    int qtde;
+    ApontadorOcorrencia Prox;
+} CelulaOcorrencia;
+
 typedef char TipoChave[N];
-typedef unsigned TipoPesos[N][TAMALFABETO];
+typedef unsigned int TipoPesos[N];
+
+// 2. O Item guardado na Hash contém a palavra e a lista de documentos
 typedef struct TipoItem {
-  /* outros componentes */
-  TipoChave Chave;
+    TipoChave Chave;
+    ApontadorOcorrencia ListaDocs; // Cabeça da lista de ocorrências
 } TipoItem;
-typedef unsigned int TipoIndice;
+
+// --- ESTRUTURAS DA TABELA HASH (ZIVIANI) ---
 typedef struct TipoCelula* TipoApontador;
 typedef struct TipoCelula {
-  TipoItem Item;
-  TipoApontador Prox;
+    TipoItem Item;
+    TipoApontador Prox;
 } TipoCelula;
+
 typedef struct TipoLista {
-  TipoCelula *Primeiro, *Ultimo;
+    TipoCelula *Primeiro, *Ultimo;
 } TipoLista;
+
 typedef TipoLista TipoDicionario[M];
-TipoDicionario Tabela;
-TipoItem Elemento;
-TipoPesos p;
-TipoApontador i;
+
+// --- FUNÇÕES ---
 
 void FLVazia(TipoLista *Lista);
-
 short Vazia(TipoLista Lista);
+void Insere(TipoItem x, TipoLista *Lista);
 
-void Ins(TipoItem x, TipoLista *Lista);
-
-void Ret(TipoApontador p, TipoLista *Lista, TipoItem *Item);
-
-
+// Funções de Hashing
 void GeraPesos(TipoPesos p);
-
-TipoIndice h(TipoChave Chave, TipoPesos p);
-
-
-void GeraPesos(TipoPesos p);
-
-TipoIndice h(TipoChave Chave, TipoPesos p);
-
+unsigned int h(TipoChave Chave, TipoPesos p);
 void Inicializa(TipoDicionario T);
 
-TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T);
+// Função auxiliar para o Índice Invertido
+void AdicionaOuAtualizaOcorrencia(ApontadorOcorrencia *lista, int idDoc);
 
-void Insere(TipoItem x, TipoPesos p, TipoDicionario T);
+// Funções principais modificadas para o Trabalho
+TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int *comparacoes);
+void Insere(TipoChave Ch, int idDoc, TipoPesos p, TipoDicionario T, int *comparacoes);
 
-void Retira(TipoItem x, TipoPesos p, TipoDicionario T);
-
-void Imp(TipoLista Lista);
-
-void Imprime(TipoDicionario Tabela);
- 
+// Funções de Impressão
+void ImprimeIndiceInvertido(TipoDicionario Tabela);
 void LerPalavra(char *p, int Tam);
 
 #endif
