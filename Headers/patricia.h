@@ -6,12 +6,13 @@
 
 #ifndef PATRICIA_H
 #define PATRICIA_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "arquivo.h"
 
-// Diferencia se o nó é interno (guarda indice/char) ou externo (guarda a palavra e a lista)
+// Diferencia se o no e interno (guia a busca) ou externo (guarda a palavra)
 typedef enum {
     Interno,
     Externo
@@ -22,14 +23,14 @@ typedef struct PATNo *Apontador;
 struct PATNo {
     TipoNo tipo;
     union {
-        // Nó Interno: guia a busca
+        // No Interno: nao armazena dado, so guia a descida
         struct {
-            int indice;      // Qual posicao da string estamos comparando
-            char charCmp;    // Caracter de comparacao
+            int indice;      // Posicao da string sendo comparada
+            char charCmp;    // Caracter pivo de comparacao
             Apontador esq, dir;
         } NInterno;
-        
-        // Nó Externo: folha que guarda a palavra e os documentos
+
+        // No Externo (folha): armazena a palavra e a lista invertida
         struct {
             char *palavra;
             Ocorrencia *listaDocs;
@@ -39,8 +40,9 @@ struct PATNo {
 
 // Prototipos das funcoes
 void InicializaArvore(Apontador *raiz);
-Apontador PesquisaPatricia(char *palavra, Apontador p);
-Apontador InserePatricia(char *palavra, int idDoc, Apontador *raiz);
-void ImprimePatricia(Apontador p);
+Apontador PesquisaPatricia(char *palavra, Apontador p, int *comparacoes);
+Apontador InserePatricia(char *palavra, int idDoc, Apontador *raiz, InfoDoc docs[], int *comparacoes);
+void ImprimeIndiceInvertidoPatricia(Apontador raiz);
+void LiberaArvorePatricia(Apontador p);
 
 #endif

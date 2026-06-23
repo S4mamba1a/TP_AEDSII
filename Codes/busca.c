@@ -101,9 +101,10 @@ void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontad
     // Processa cada termo digitado pelo usuário
     for (int j = 0; j < numTermos; j++) {
         char *termo = termosConsulta[j];
-        
+        // Cria a variável para contar as comparações dessa palavra específica
+        int comparacoes = 0;
         // Pesquisa na Árvore PATRICIA
-        Apontador no = PesquisaPatricia(termo, raizPatricia);
+        Apontador no = PesquisaPatricia(termo, raizPatricia, &comparacoes);
         
         // Verifica se achou, se o nó é folha (Externo) e se a palavra bate exatamente
         if (no != NULL && no->tipo == Externo && strcmp(no->NO.NExterno.palavra, termo) == 0) {
