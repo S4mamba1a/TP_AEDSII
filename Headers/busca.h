@@ -7,26 +7,25 @@
 #ifndef BUSCA_H
 #define BUSCA_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "arquivo.h"
 #include "hash.h"
+#include "patricia.h"
+
 
 // Estrutura auxiliar para guardar a relevância de cada documento
 // e facilitar a ordenação (qsort) no final
-typedef struct {
-    int idDoc;
+typedef struct {                                   
+    int   idDoc;
     float relevancia;
+    char  nomeArquivo[MAX_NOME];
 } ResultadoBusca;
 
-/*
- * Função principal de busca.
- * Recebe:
- * - termosConsulta: Matriz de strings com as palavras digitadas pelo usuário
- * - numTermosConsulta: Quantidade de palavras (o 'q' da fórmula)
- * - T: A Tabela Hash preenchida
- * - N: Número total de documentos na coleção
- * - termosDistintosPorDoc: Vetor onde o índice é o idDoc e o valor é o 'n_i' (termos distintos daquele doc)
- * - nomesDocumentos: Vetor de strings para imprimir o nome original do arquivo (ex: "arquivo1.txt")
- */
-void BuscarFabulas(char termosConsulta[][N], int numTermosConsulta, TipoDicionario T, 
-                    int N_TotalDocs, int *termosDistintosPorDoc, char nomesDocumentos[][100]);
-
+void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDicionario T, TipoPesos pesosHash, int numDocs, InfoDoc docs[]);
+         
+void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontador raiz, int numDocs, InfoDoc docs[]);
+                  
 #endif
