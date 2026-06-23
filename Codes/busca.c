@@ -150,9 +150,9 @@ void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontad
     }
 
     // Passo 4: Ordenar e exibir o ranking obtido pela PATRICIA
-    printf("\n========================================");
+    printf("\n----------------------------------------");
     printf("\n   RANKING DE RELEVANCIA (PATRICIA)     ");
-    printf("\n========================================\n");
+    printf("\n----------------------------------------\n");
     
     if (qtdResultados > 0) {
         qsort(ranking, qtdResultados, sizeof(ResultadoBusca), ComparaRelevancia);
