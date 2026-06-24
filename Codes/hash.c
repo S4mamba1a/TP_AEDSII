@@ -36,6 +36,10 @@ unsigned int h(TipoChave Chave, TipoPesos p) {
     int i; 
     unsigned int Soma = 0; 
     int comp = strlen(Chave);
+    
+    // Trava de segurança para não ultrapassar o tamanho de pesos
+    if (comp > N) comp = N; 
+
     for (i = 0; i < comp; i++) 
         Soma += (unsigned int)Chave[i] * p[i];
     return (Soma % M);
@@ -49,34 +53,6 @@ void Inicializa(TipoDicionario T) {
 // ====================================================================
 // FUNÇÕES ESPECÍFICAS PARA O TRABALHO PRÁTICO
 // ====================================================================
-
-void AdicionaOuAtualizaOcorrencia(ApontadorOcorrencia *lista, int idDoc) {
-    ApontadorOcorrencia aux = *lista;
-    ApontadorOcorrencia ant = NULL;
-
-    // Procura o documento na lista da palavra
-    while (aux != NULL && aux->idDoc != idDoc) {
-        ant = aux;
-        aux = aux->Prox;
-    }
-
-    if (aux != NULL && aux->idDoc == idDoc) {
-        // Documento já existe na lista: apenas incrementa a frequência (TF)
-        aux->quantidade++;
-    } else {
-        // Primeira vez que a palavra aparece neste documento
-        ApontadorOcorrencia nova = (ApontadorOcorrencia)malloc(sizeof(Ocorrencia));
-        nova->idDoc = idDoc;
-        nova->quantidade = 1;
-        nova->Prox = NULL;
-
-        if (ant == NULL) {
-            *lista = nova; // Insere no início (primeiro doc da palavra)
-        } else {
-            ant->Prox = nova; // Insere no final (mantém a ordem de chegada dos docs)
-        }
-    }
-}
 
 TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int *comparacoes) { 
     unsigned int i = h(Ch, p);
@@ -102,43 +78,70 @@ void Insere(TipoChave Ch, int idDoc, TipoPesos p, TipoDicionario T, int *compara
         strcpy(x.Chave, Ch);
         x.ListaDocs = NULL; // Inicializa a lista de documentos vazia
         
-        // Cria a primeira ocorrência para o documento atual
-        AdicionaOuAtualizaOcorrencia(&x.ListaDocs, idDoc);
+        // Usa a função do TAD arquivo
+        arq_InserirOcorrencia(&x.ListaDocs, idDoc);
         
         // Insere a nova palavra na Tabela Hash
         Ins(x, &T[h(Ch, p)]);
     } else {
-        // CASO 2: A palavra já existe, apenas atualizamos a lista de documentos dela
-        AdicionaOuAtualizaOcorrencia(&(Ap->Item.ListaDocs), idDoc);
+        // CASO 2: A palavra já existe, apenas atualiza chamando a função do TAD arquivo
+        arq_InserirOcorrencia(&(Ap->Item.ListaDocs), idDoc);
     }
 } 
 
+// Função auxiliar para o qsort comparar duas chaves alfabeticamente na Hash
+int ComparaPalavras(const void *a, const void *b) {
+    TipoItem *itemA = *(TipoItem **)a;
+    TipoItem *itemB = *(TipoItem **)b;
+    return strcmp(itemA->Chave, itemB->Chave);
+}
+
 void ImprimeIndiceInvertido(TipoDicionario Tabela) { 
-    int i;
-    for (i = 0; i < M; i++) { 
-        TipoApontador AuxPalavra = Tabela[i].Primeiro->Prox;
-        
-        while (AuxPalavra != NULL) {
-            printf("%s ", AuxPalavra->Item.Chave);
-            
-            // Percorre a lista de documentos dessa palavra
-            ApontadorOcorrencia AuxDoc = AuxPalavra->Item.ListaDocs;
-            while (AuxDoc != NULL) {
-                printf("<%d, %d> ", AuxDoc->quantidade, AuxDoc->idDoc);
-                AuxDoc = AuxDoc->Prox;
-            }
-            printf("\n");
-            
-            AuxPalavra = AuxPalavra->Prox;
+    // Conta e aloca para impressão ORDENADA (Requisito do trabalho)
+    int totalPalavras = 0;
+    for (int i = 0; i < M; i++) {
+        TipoApontador Aux = Tabela[i].Primeiro->Prox;
+        while (Aux != NULL) {
+            totalPalavras++;
+            Aux = Aux->Prox;
         }
     }
+
+    if (totalPalavras == 0) return;
+
+    TipoItem **vetorPalavras = (TipoItem **)malloc(totalPalavras * sizeof(TipoItem *));
+    int idx = 0;
+    
+    for (int i = 0; i < M; i++) {
+        TipoApontador Aux = Tabela[i].Primeiro->Prox;
+        while (Aux != NULL) {
+            vetorPalavras[idx++] = &(Aux->Item);
+            Aux = Aux->Prox;
+        }
+    }
+
+    // Ordena o vetor usando qsort
+    qsort(vetorPalavras, totalPalavras, sizeof(TipoItem *), ComparaPalavras);
+
+    // Imprime alfabeticamente e usa a função ImprimirOcorrencia do arquivo.h
+    for (int i = 0; i < totalPalavras; i++) {
+        printf("%s", vetorPalavras[i]->Chave);
+        ImprimirOcorrencia(vetorPalavras[i]->ListaDocs);
+        printf("\n");
+    }
+
+    free(vetorPalavras);
 } 
  
 void LerPalavra(char *p, int Tam) { 
     char c; int i, j;
-    fflush(stdin); j=0;
-    while (((c=getchar())!='\n') && j<Tam-1) p[j++]= c;
-    p[j]='\0';
-    while(c != '\n') c=getchar();
-    for(i=j-1;(i>=0 && p[i]==' ');i--) p[i]='\0';
+    j = 0;
+    while (((c = getchar()) != '\n') && c != EOF && j < Tam - 1) {
+        if (c != '\r') p[j++] = c;
+    }
+    p[j] = '\0';
+    if (c != '\n' && c != EOF) {
+        while ((c = getchar()) != '\n' && c != EOF);
+    }
+    for (i = j - 1; (i >= 0 && p[i] == ' '); i--) p[i] = '\0';
 }

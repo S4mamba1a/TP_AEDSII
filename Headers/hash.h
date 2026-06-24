@@ -18,13 +18,13 @@
 
 // --- ESTRUTURAS DO ÍNDICE INVERTIDO ---
 
-// 1. Célula da Lista de Documentos (Ocorrências)
+// Usa a struct Ocorrencia que agora vem de arquivo.h
 typedef struct Ocorrencia* ApontadorOcorrencia;
 
 typedef char TipoChave[N];
 typedef unsigned int TipoPesos[N];
 
-// 2. O Item guardado na Hash contém a palavra e a lista de documentos
+// O Item guardado na Hash contém a palavra e a lista de documentos
 typedef struct TipoItem {
     TipoChave Chave;
     ApontadorOcorrencia ListaDocs; // Cabeça da lista de ocorrências
@@ -53,9 +53,6 @@ void Ins(TipoItem x, TipoLista *Lista);
 void GeraPesos(TipoPesos p);
 unsigned int h(TipoChave Chave, TipoPesos p);
 void Inicializa(TipoDicionario T);
-
-// Função auxiliar para o Índice Invertido
-void AdicionaOuAtualizaOcorrencia(ApontadorOcorrencia *lista, int idDoc);
 
 // Funções principais modificadas para o Trabalho
 TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int *comparacoes);

@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h> // Necessário para a função log()
+#include <math.h> // Necessário para a função log2()
 #include "busca.h"
 
 // Função auxiliar para o qsort ordenar de forma DECRESCENTE por relevância
@@ -20,7 +20,7 @@ int ComparaRelevancia(const void *a, const void *b) {
     return 0; 
 }
 
-void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDicionario T, TipoPesos pesosHash, int numDocs, InfoDoc docs[]){
+void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDicionario T, TipoPesos pesosHash, int numDocs, InfoDoc docs[]) {
     // Vetor para acumular a soma dos pesos de cada documento.
     float somaPesos[MAX_DOCS + 1];        // Como idDoc começa em 1, criamos com tamanho MAX_DOCS + 1.
     for (int i = 0; i <= MAX_DOCS; i++) {
@@ -30,10 +30,13 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
     for (int j = 0; j < numTermos; j++) {    // Processa cada termo digitado pelo usuário
         char *termo = termosConsulta[j];
         int comparacoes = 0;
-        TipoApontador ap = Pesquisa(termosConsulta[j], pesosHash, T, &comparacoes);    // Pesquisa na Hash. O Pesquisa do Ziviani retorna a célula ANTERIOR à que contém o item.
         
-        if (ap != NULL && ap->Prox != NULL) {
-            Ocorrencia *auxDoc = ap->Prox->Item.ListaDocs;   // Encontrou a palavra! Pegamos a lista de ocorrências (documentos) dela
+        // Pesquisa na Hash. O Pesquisa adaptado retorna o nó exato onde o item está.
+        TipoApontador ap = Pesquisa(termo, pesosHash, T, &comparacoes); 
+        
+        // CORREÇÃO: Usar diretamente ap->Item.ListaDocs
+        if (ap != NULL) {
+            Ocorrencia *auxDoc = ap->Item.ListaDocs;   // Pega a lista de ocorrências da palavra
             
             int d_k = 0;               // Passo 1: Descobrir o d_k (quantos documentos possuem essa palavra)
             Ocorrencia *contar = auxDoc;
@@ -48,7 +51,7 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
                     int idDoc = auxDoc->idDoc;
                     int f_ki = auxDoc->quantidade;  // Frequência do termo neste documento
                     
-                    // Fórmula: w_ki = f_ki * log(N / d_k)
+                    // Fórmula: w_ki = f_ki * log2(N / d_k)
                     float peso_w = (float)f_ki * log2((float)numDocs / (float)d_k);
                     
                     somaPesos[idDoc] += peso_w;
@@ -86,12 +89,12 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
             int id = ranking[k].idDoc;
             printf("%d. Fabula: %-20s | Relevancia: %.4f\n", k + 1, docs[id - 1].nomeArquivo, ranking[k].relevancia);
         }
-    }else{
+    } else {
         printf("Nenhuma fabula correspondente encontrada.\n");
     }
 }
 
-void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontador raizPatricia, int numDocs, InfoDoc docs[]){
+void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontador raizPatricia, int numDocs, InfoDoc docs[]) {
     
     float somaPesos[MAX_DOCS + 1];
     for (int i = 0; i <= MAX_DOCS; i++) {
