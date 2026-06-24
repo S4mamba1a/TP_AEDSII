@@ -203,7 +203,7 @@ void ColetarFolhas(Apontador p, Apontador *vetorFolhas, int *posicao) {
 }
 
 // Compara strings pro qsort
-int ComparaPalavras(const void *a, const void *b) {
+int ComparaPalavrasPatricia(const void *a, const void *b) {
     const Apontador *na = (const Apontador *)a;
     const Apontador *nb = (const Apontador *)b;
     return strcmp((*na)->NO.NExterno.palavra, (*nb)->NO.NExterno.palavra);
@@ -232,7 +232,7 @@ void ImprimeIndiceInvertidoPatricia(Apontador raiz) {
     int posicao = 0;
     ColetarFolhas(raiz, vetorFolhas, &posicao);
     
-    qsort(vetorFolhas, total, sizeof(Apontador), ComparaPalavras);
+    qsort(vetorFolhas, total, sizeof(Apontador), ComparaPalavrasPatricia);
 
     for (int i = 0; i < total; i++) {
         printf("%s ", vetorFolhas[i]->NO.NExterno.palavra);

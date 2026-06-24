@@ -90,7 +90,7 @@ void Insere(TipoChave Ch, int idDoc, TipoPesos p, TipoDicionario T, int *compara
 } 
 
 // Função auxiliar para o qsort comparar duas chaves alfabeticamente na Hash
-int ComparaPalavras(const void *a, const void *b) {
+int ComparaPalavrasHash(const void *a, const void *b) {
     TipoItem *itemA = *(TipoItem **)a;
     TipoItem *itemB = *(TipoItem **)b;
     return strcmp(itemA->Chave, itemB->Chave);
@@ -121,7 +121,7 @@ void ImprimeIndiceInvertido(TipoDicionario Tabela) {
     }
 
     // Ordena o vetor usando qsort
-    qsort(vetorPalavras, totalPalavras, sizeof(TipoItem *), ComparaPalavras);
+    qsort(vetorPalavras, totalPalavras, sizeof(TipoItem *), ComparaPalavrasHash);
 
     // Imprime alfabeticamente e usa a função ImprimirOcorrencia do arquivo.h
     for (int i = 0; i < totalPalavras; i++) {
