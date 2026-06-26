@@ -92,11 +92,14 @@ int LerEntrada(const char *arqEntrada, InfoDoc docs[], int maxDocs) {
             nome[len - 1] = '\0';
         }
 
-        docs[i].idDoc              = i + 1;  // idDoc comeca em 1 
+        docs[i].idDoc = i + 1;  // idDoc comeca em 1 
         docs[i].quantidadeTermosdistintos = 0;
         strncpy(docs[i].nomeArquivo, nome, MAX_NOME - 1);
         docs[i].nomeArquivo[MAX_NOME - 1] = '\0';
+        
     }
+
+
 
     fclose(f);
     return i; // retorna quantos documentos foram lidos 

@@ -45,7 +45,7 @@ int main() {
         printf("\n-------------------------------------------------------\n");
         printf("          MAQUINA DE BUSCA - BIBLIOTECA DE FABULAS       \n");
         printf("-------------------------------------------------------\n");
-        printf("1. (a) Receber arquivo de entrada (ex: entrada.txt)\n");
+        printf("1. (a) Receber arquivo de entrada (ex: Fabulas/entrada.txt)\n");
         printf("2. (b) Construir indices invertidos (PATRICIA e HASH)\n");
         printf("3. (c) Imprimir indices invertidos em ordem alfabetica\n");
         printf("4. (d) Realizar buscas por termo(s)\n");
@@ -104,6 +104,25 @@ int main() {
                         printf("-> Erro: Nao foi possivel abrir a fabula '%s'.\n", docs[i].nomeArquivo);
                         continue;
                     }
+                    char bufferTitulo[MAX_NOME];
+                    docs[i].titulo[0] = '\0';           // Inicializa o titulo como vazio
+
+                    while (fgets(bufferTitulo, MAX_NOME, f) != NULL) {
+                        
+                        bufferTitulo[strcspn(bufferTitulo, "\r\n")] = '\0';         //Limpa quebras de linha
+                        
+                        if (strlen(bufferTitulo) > 0) {      //Se a linha não for vazia, achou o título
+                            strncpy(docs[i].titulo, bufferTitulo, MAX_NOME - 1);
+                            docs[i].titulo[MAX_NOME - 1] = '\0';
+                            break;    //Saí do while assim que fechar o titulo
+                        }
+                    }
+
+                    if (strlen(docs[i].titulo) == 0) { 
+                        strcpy(docs[i].titulo, "Sem Titulo");
+                    }
+
+                    rewind(f);           //Volta o cursor do arquivo para o início para ler as palavras
 
                     char palavra[MAX_PALAVRA];
                     while (arq_ProxPalavra(f, palavra)) {

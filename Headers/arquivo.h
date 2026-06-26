@@ -16,13 +16,14 @@
 
 typedef struct Ocorrencia{             //Representa uma ocorrencia de uma palavra em um documento. A lista é mantida em ordem crescente de idDoc          
     int idDoc;
-    int quantidade;                //Número de vezes que a palavra aparece no documento
+    int quantidade;              //Número de vezes que a palavra aparece no documento
     struct Ocorrencia* Prox;          //Ponteiro para o próximo nó
 }Ocorrencia;
 
 typedef struct{       //Associa o idDoc ao nome do arquivo e ao numero de termos distintos              
     int idDoc;
     char nomeArquivo[MAX_NOME];       //Nome do arquivo da fábula 
+    char titulo[MAX_NOME];           //Titulo da fábula (primeira linha do arquivo)
     int quantidadeTermosdistintos;     //Termos distintos após stopwords, necessário para o cálculo do TF-IDF 
 }InfoDoc;
 

@@ -87,7 +87,7 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
         
         for (int k = 0; k < qtdResultados; k++) {
             int id = ranking[k].idDoc;
-            printf("%d. Fabula: %-20s | Relevancia: %.4f\n", k + 1, docs[id - 1].nomeArquivo, ranking[k].relevancia);
+            printf("%d. Titulo: %-30s | Arquivo: %s | Relevancia: %.4f\n", k + 1,docs[id - 1].titulo, docs[id - 1].nomeArquivo, ranking[k].relevancia);
         }
     } else {
         printf("Nenhuma fabula correspondente encontrada.\n");
@@ -162,7 +162,7 @@ void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontad
         
         for (int k = 0; k < qtdResultados; k++) {
             int id = ranking[k].idDoc;
-            printf("%d. Fabula: %-20s | Relevancia: %.4f\n", k + 1, docs[id - 1].nomeArquivo, ranking[k].relevancia);
+            printf("%d. Titulo: %-30s | Arquivo: %s | Relevancia: %.4f\n", k + 1,docs[id - 1].titulo, docs[id - 1].nomeArquivo, ranking[k].relevancia);
         }
     } else {
         printf("Nenhuma fabula correspondente encontrada.\n");
