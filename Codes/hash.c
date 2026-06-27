@@ -156,9 +156,28 @@ void LiberaHash(TipoDicionario T) {
             free(ap);
             ap = prox;
         }
-        /* libera a celula-cabeca alocada em FLVazia */
+        // libera a celula-cabeca alocada em FLVazia 
         free(T[i].Primeiro);
         T[i].Primeiro = NULL;
         T[i].Ultimo   = NULL;
     }
+}
+
+size_t MemoriaHash(TipoDicionario T) {
+    size_t mem = 0;
+    int i;
+    for (i = 0; i < M; i++) {
+        mem += sizeof(TipoCelula); // celula-cabeca de cada bucket
+        TipoApontador ap = T[i].Primeiro->Prox;
+        while (ap != NULL) {
+            mem += sizeof(TipoCelula); // celula da palavra
+            Ocorrencia *oc = ap->Item.ListaDocs;
+            while (oc != NULL) {
+                mem += sizeof(Ocorrencia);
+                oc = oc->Prox;
+            }
+            ap = ap->Prox;
+        }
+    }
+    return mem;
 }

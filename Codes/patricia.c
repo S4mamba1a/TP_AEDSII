@@ -253,3 +253,19 @@ void LiberaArvorePatricia(Apontador p) {
     }
     free(p);
 }
+
+size_t MemoriaPatricia(Apontador p) {
+    if (p == NULL) return 0;
+ 
+    if (p->tipo == Interno) {
+        return sizeof(struct PATNo) + MemoriaPatricia(p->NO.NInterno.esq) + MemoriaPatricia(p->NO.NInterno.dir);
+    } else {
+        size_t mem = sizeof(struct PATNo) + strlen(p->NO.NExterno.palavra) + 1;
+        Ocorrencia *oc = p->NO.NExterno.listaDocs;
+        while (oc != NULL) {
+            mem += sizeof(Ocorrencia);
+            oc = oc->Prox;
+        }
+        return mem;
+    }
+}

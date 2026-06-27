@@ -63,6 +63,7 @@ void ImprimeIndiceInvertido(TipoDicionario Tabela);
 void LerPalavra(char *p, int Tam);
 // Medicao de memoria 
 size_t MemoriaHash(TipoDicionario T);
+
 void LiberaHash(TipoDicionario T);
 
 #endif

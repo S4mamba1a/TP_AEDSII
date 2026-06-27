@@ -44,5 +44,6 @@ Apontador PesquisaPatricia(char *palavra, Apontador p, int *comparacoes);
 Apontador InserePatricia(char *palavra, int idDoc, Apontador *raiz, InfoDoc docs[], int *comparacoes);
 void ImprimeIndiceInvertidoPatricia(Apontador raiz);
 void LiberaArvorePatricia(Apontador p);
+size_t MemoriaPatricia(Apontador p);
 
 #endif

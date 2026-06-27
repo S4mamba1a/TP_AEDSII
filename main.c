@@ -49,6 +49,7 @@ int main() {
         printf("2. (b) Construir indices invertidos (PATRICIA e HASH)\n");
         printf("3. (c) Imprimir indices invertidos em ordem alfabetica\n");
         printf("4. (d) Realizar buscas por termo(s)\n");
+        printf("5. (e) Exibir uso de memoria das estruturas\n");
         printf("0. Sair\n");
         printf("Escolha uma opcao: ");
 
@@ -190,6 +191,19 @@ int main() {
                     BuscarNaHash(termos, numTermos, TabelaHash, pesosHash, numDocs, docs);
                     BuscarNaPatricia(termos, numTermos, raizPatricia, numDocs, docs);
                 }
+                break;
+
+            case 5:
+                if (!indicesConstruidos) {
+                    printf("\n-> Erro: Construa os indices primeiro (Opcao 2).\n");
+                    break;
+                }
+                size_t memP = MemoriaPatricia(raizPatricia);
+                size_t memH = MemoriaHash(TabelaHash);
+                printf("\n--- USO DE MEMORIA ---\n");
+                printf("Arvore PATRICIA : %zu bytes (%.2f KB)\n", memP, memP / 1024.0);
+                printf("Tabela HASH     : %zu bytes (%.2f KB)\n", memH, memH / 1024.0);
+                printf("(a Hash inclui %d celulas-cabeca dos buckets = %zu bytes fixos)\n", M, (size_t)M * sizeof(TipoCelula));
                 break;
 
             case 0:
