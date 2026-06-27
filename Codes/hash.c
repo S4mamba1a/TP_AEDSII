@@ -145,3 +145,20 @@ void LerPalavra(char *p, int Tam) {
     }
     for (i = j - 1; (i >= 0 && p[i] == ' '); i--) p[i] = '\0';
 }
+
+void LiberaHash(TipoDicionario T) {
+    int i;
+    for (i = 0; i < M; i++) {
+        TipoApontador ap = T[i].Primeiro->Prox;
+        while (ap != NULL) {
+            TipoApontador prox = ap->Prox;
+            arq_LiberarOcorrencia(ap->Item.ListaDocs);
+            free(ap);
+            ap = prox;
+        }
+        /* libera a celula-cabeca alocada em FLVazia */
+        free(T[i].Primeiro);
+        T[i].Primeiro = NULL;
+        T[i].Ultimo   = NULL;
+    }
+}

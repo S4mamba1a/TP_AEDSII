@@ -66,7 +66,7 @@ int main() {
                 if (indicesConstruidos) {
                     printf("-> Limpando indices anteriores para nova leitura...\n");
                     LiberaArvorePatricia(raizPatricia);
-                    
+                    LiberaHash(TabelaHash);
                     Inicializa(TabelaHash);
                     InicializaArvore(&raizPatricia);
                     indicesConstruidos = 0;
@@ -203,6 +203,7 @@ int main() {
 
     // Limpeza completa de memoria no fim da execucao
     LiberaArvorePatricia(raizPatricia);
+    LiberaHash(TabelaHash);
 
     return 0;
 }

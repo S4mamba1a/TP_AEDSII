@@ -102,9 +102,9 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
 
 
     // Passo 4: Ordenar e exibir o ranking obtido pela Hash
-    printf("\n========================================");
+    printf("\n----------------------------------------");
     printf("\n   RANKING DE RELEVANCIA (TABELA HASH)   ");
-    printf("\n========================================\n");
+    printf("\n----------------------------------------\n");
     
     if (qtdResultados > 0) {
         qsort(ranking, qtdResultados, sizeof(ResultadoBusca), ComparaRelevancia);
