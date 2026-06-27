@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h> // Necessário para a função log2()
+#include <sys/time.h>
 #include "busca.h"
 
 // Função auxiliar para o qsort ordenar de forma DECRESCENTE por relevância
@@ -20,12 +21,20 @@ int ComparaRelevancia(const void *a, const void *b) {
     return 0; 
 }
 
+static double CalcularTempoEmMs(struct timeval inicio, struct timeval fim) {
+    return (fim.tv_sec - inicio.tv_sec) * 1000.0 + (fim.tv_usec - inicio.tv_usec) / 1000.0;
+}
+
 void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDicionario T, TipoPesos pesosHash, int numDocs, InfoDoc docs[]) {
+    struct timeval inicioBusca, fimBusca;
+    gettimeofday(&inicioBusca, NULL);
     // Vetor para acumular a soma dos pesos de cada documento.
     float somaPesos[MAX_DOCS + 1];        // Como idDoc começa em 1, criamos com tamanho MAX_DOCS + 1.
     for (int i = 0; i <= MAX_DOCS; i++) {
         somaPesos[i] = 0.0;
     }
+
+    int totalComparacoes = 0;
 
     for (int j = 0; j < numTermos; j++) {    // Processa cada termo digitado pelo usuário
         char *termo = termosConsulta[j];
@@ -33,6 +42,7 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
         
         // Pesquisa na Hash. O Pesquisa adaptado retorna o nó exato onde o item está.
         TipoApontador ap = Pesquisa(termo, pesosHash, T, &comparacoes); 
+        totalComparacoes += comparacoes;
         
         // CORREÇÃO: Usar diretamente ap->Item.ListaDocs
         if (ap != NULL) {
@@ -77,6 +87,8 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
         }
     }
 
+    gettimeofday(&fimBusca, NULL);
+
     // Passo 4: Ordenar e exibir o ranking obtido pela Hash
     printf("\n========================================");
     printf("\n   RANKING DE RELEVANCIA (TABELA HASH)   ");
@@ -92,14 +104,21 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
     } else {
         printf("Nenhuma fabula correspondente encontrada.\n");
     }
+
+    printf("Comparacoes da busca (TABELA HASH): %d\n", totalComparacoes);
+    printf("Tempo de busca (TABELA HASH): %.3f ms\n", CalcularTempoEmMs(inicioBusca, fimBusca));
 }
 
 void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontador raizPatricia, int numDocs, InfoDoc docs[]) {
+    struct timeval inicioBusca, fimBusca;
+    gettimeofday(&inicioBusca, NULL);
     
     float somaPesos[MAX_DOCS + 1];
     for (int i = 0; i <= MAX_DOCS; i++) {
         somaPesos[i] = 0.0;
     }
+
+    int totalComparacoes = 0;
 
     // Processa cada termo digitado pelo usuário
     for (int j = 0; j < numTermos; j++) {
@@ -108,6 +127,7 @@ void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontad
         int comparacoes = 0;
         // Pesquisa na Árvore PATRICIA
         Apontador no = PesquisaPatricia(termo, raizPatricia, &comparacoes);
+        totalComparacoes += comparacoes;
         
         // Verifica se achou, se o nó é folha (Externo) e se a palavra bate exatamente
         if (no != NULL && no->tipo == Externo && strcmp(no->NO.NExterno.palavra, termo) == 0) {
@@ -152,6 +172,8 @@ void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontad
         }
     }
 
+    gettimeofday(&fimBusca, NULL);
+
     // Passo 4: Ordenar e exibir o ranking obtido pela PATRICIA
     printf("\n----------------------------------------");
     printf("\n   RANKING DE RELEVANCIA (PATRICIA)     ");
@@ -167,4 +189,7 @@ void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontad
     } else {
         printf("Nenhuma fabula correspondente encontrada.\n");
     }
+
+    printf("Comparacoes da busca (ARVORE PATRICIA): %d\n", totalComparacoes);
+    printf("Tempo de busca (ARVORE PATRICIA): %.3f ms\n", CalcularTempoEmMs(inicioBusca, fimBusca));
 }

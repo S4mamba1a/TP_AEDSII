@@ -24,6 +24,8 @@ typedef struct {
     char  nomeArquivo[MAX_NOME];
 } ResultadoBusca;
 
+static double CalcularTempoEmMs(struct timeval inicio, struct timeval fim);
+
 void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDicionario T, TipoPesos pesosHash, int numDocs, InfoDoc docs[]);
          
 void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontador raiz, int numDocs, InfoDoc docs[]);
