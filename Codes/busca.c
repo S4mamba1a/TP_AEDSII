@@ -21,7 +21,7 @@ int ComparaRelevancia(const void *a, const void *b) {
     return 0; 
 }
 
-static double CalcularTempoEmMs(struct timeval inicio, struct timeval fim) {
+double CalcularTempoEmMs(struct timeval inicio, struct timeval fim) {
     return (fim.tv_sec - inicio.tv_sec) * 1000.0 + (fim.tv_usec - inicio.tv_usec) / 1000.0;
 }
 
