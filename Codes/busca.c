@@ -57,7 +57,6 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
         TempoTotalBusca += tempoDestaBusca;
         totalComparacoes += comparacoes;
           
-        // CORREÇÃO: Usar diretamente ap->Item.ListaDocs
         if (ap != NULL) {
             Ocorrencia *auxDoc = ap->Item.ListaDocs;   // Pega a lista de ocorrências da palavra
             
@@ -101,7 +100,7 @@ void BuscarNaHash(char termosConsulta[][MAX_PALAVRA], int numTermos, TipoDiciona
     }
 
 
-    // Passo 4: Ordenar e exibir o ranking obtido pela Hash
+    
     printf("\n----------------------------------------");
     printf("\n   RANKING DE RELEVANCIA (TABELA HASH)   ");
     printf("\n----------------------------------------\n");
@@ -135,13 +134,13 @@ void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontad
         char *termo = termosConsulta[j];
         // Cria a variável para contar as comparações dessa palavra específica
         int comparacoes = 0;
-        // Pesquisa na Árvore PATRICIA
-
+        
         struct timeval inicioBusca, fimBusca;
         int repeticoes = 100000;
         Apontador no = NULL;
         gettimeofday(&inicioBusca, NULL);
-
+        
+        // Pesquisa na Árvore PATRICIA
         for (int r = 0; r < repeticoes; r++){
             int tempComp = 0;
             no = PesquisaPatricia(termo, raizPatricia, &tempComp);
@@ -198,7 +197,7 @@ void BuscarNaPatricia(char termosConsulta[][MAX_PALAVRA], int numTermos, Apontad
         }
     }
 
-    // Passo 4: Ordenar e exibir o ranking obtido pela PATRICIA
+    
     printf("\n----------------------------------------");
     printf("\n   RANKING DE RELEVANCIA (PATRICIA)     ");
     printf("\n----------------------------------------\n");
