@@ -13,7 +13,7 @@
 #include <string.h>
 #include "arquivo.h"
 
-#define M 1000
+#define M 503
 #define N 128
 
 // --- ESTRUTURAS DO ÍNDICE INVERTIDO ---
@@ -63,7 +63,6 @@ void ImprimeIndiceInvertido(TipoDicionario Tabela);
 void LerPalavra(char *p, int Tam);
 // Medicao de memoria 
 size_t MemoriaHash(TipoDicionario T);
-
 void LiberaHash(TipoDicionario T);
 
 #endif
