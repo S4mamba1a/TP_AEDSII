@@ -38,7 +38,6 @@ struct PATNo {
     } NO;
 };
 
-// Prototipos das funcoes
 void InicializaArvore(Apontador *raiz);
 Apontador PesquisaPatricia(char *palavra, Apontador p, int *comparacoes);
 Apontador InserePatricia(char *palavra, int idDoc, Apontador *raiz, InfoDoc docs[], int *comparacoes);
